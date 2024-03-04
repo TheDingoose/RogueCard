@@ -7,6 +7,6 @@ exit)
 
 cd %cd%\godot-4.2
 scons dev_build=yes
-scons target=editor dev_build=yes
+scons target=editor vsproj=yes dev_build=yes
 
 PAUSE

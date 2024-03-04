@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://crtv5oc0bc64w"]
+[gd_scene load_steps=5 format=3 uid="uid://crtv5oc0bc64w"]
 
 [ext_resource type="Texture2D" uid="uid://bp1fxwgwy5y8p" path="res://Assets/Textures/fe.png" id="1_xi4hp"]
+[ext_resource type="Script" path="res://Scripts/TestScriptTester.gd" id="2_ggkrn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_762g3"]
 albedo_texture = ExtResource("1_xi4hp")
@@ -13,3 +14,4 @@ albedo_texture = ExtResource("1_xi4hp")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38939, 0)
 material_override = SubResource("StandardMaterial3D_762g3")
 mesh = SubResource("QuadMesh_o72es")
+script = ExtResource("2_ggkrn")

@@ -11,17 +11,11 @@ class Grid : public Node3D {
 	GDCLASS(Grid, Node3D);
 
 private:
-
-//fill with an empty object, or nullpointers?
-	//Vector<Variant> GridData;
 	Dictionary GridData;
 	Vector2 SquareSize;
 
 protected:
 	static void _bind_methods();
-//Inherit from node3d, Let thing assign themselves on grid, check the grid for what is there, and generally store data here
-//Do we let the grid check AOEs too? probably not..
-//EnsureGrid() Somewhere??
 
 public:
 	Grid();

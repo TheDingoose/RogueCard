@@ -12,11 +12,11 @@ Dictionary Grid::get_raw_grid_data() const{
 }
 
 Vector2 Grid::get_square_size() const {
-	return SquareSize; //Update all childrens positions??
+	return SquareSize; 
 }
 
 void Grid::set_square_size(const Vector2 &size) {
-	SquareSize = size;
+	SquareSize = size; //Update all childrens positions??
 }
 
 Vector3 Grid::get_square_size_3d() const {

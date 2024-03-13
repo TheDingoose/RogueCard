@@ -8,14 +8,31 @@ class GridObject : public Node3D {
 	GDCLASS(GridObject, Node3D);
 
 private:
-	std::shared_ptr<Grid> GridPtr;
 	bool ValidGrid = false;
+	Vector2i GridPos;
+	Grid* LastGridSet;
+
+	//Validate the global grid, call only at runtime
+	bool validate_grid();
+	//Make sure that this object exists where it thinks it does on the grid
+	bool validate_exists_on_grid_pos(Vector2i location, Grid *grid);
+	//Set this nodes transform to where it should be on the grid
+	void move_to_grid_position(Grid *grid);
+
 protected:
 	static void _bind_methods();
 public:
-	void register_grid(Grid* grid);
+
+	Vector2i get_grid_pos() const;
+
+	void set_on_grid(Vector2i location, Grid *grid);
+	void remove_from_grid(Grid *grid);
+	void move_on_grid(Vector2i location, Grid *grid);
+	bool safe_move_on_grid(Vector2i location, Grid *grid);
+
 	GridObject();
 	//Destructor, get yourself off the grid
+	~GridObject();
 };
 
 #endif

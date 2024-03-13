@@ -25,19 +25,21 @@ protected:
 
 public:
 	Grid();
+	Dictionary get_raw_grid_data() const;
 
 	Vector2 get_square_size() const;
 	void set_square_size(const Vector2 &size);
+	Vector3 get_square_size_3d() const;
 
-	Variant get_cell_data(const Vector2i &location);
+	GridObject* get_cell_data(const Vector2i &location);
+	ObjectID get_cell_ID(const Vector2i &location);
 	void empty_cell_data(const Vector2i &location);
-	void force_set_cell_data(const Vector2i &location, const Variant &data);
-	bool try_set_cell_data(const Vector2i &location, const Variant &data);
+	void force_set_cell_data(const Vector2i &location, const ObjectID data);
+	bool try_set_cell_data(const Vector2i &location, const ObjectID data);
 
+	bool exists_on_grid(const ObjectID data);
 	bool empty_grid();
-	
-	
-
+	void load_grid(const Grid* source_grid);
 };
 
 #endif

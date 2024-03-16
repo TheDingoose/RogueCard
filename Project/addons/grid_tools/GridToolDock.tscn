@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8puj1kciwrdt"]
+
+[ext_resource type="Texture2D" uid="uid://btnsvq57n1tsa" path="res://addons/grid_tools/Assets/Brush32px.png" id="1_lxv8n"]
+
+[node name="GridTools" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabBar" type="TabBar" parent="."]
+layout_mode = 0
+offset_right = 167.0
+offset_bottom = 80.0
+tab_count = 2
+clip_tabs = false
+tab_0/title = "Paint"
+tab_0/icon = ExtResource("1_lxv8n")
+tab_1/title = "Eraser"
+
+[node name="ToolHolder" type="Control" parent="TabBar"]
+anchors_preset = 0
+offset_top = 80.0
+offset_right = 40.0
+offset_bottom = 120.0
+
+[node name="Paint" type="Control" parent="TabBar/ToolHolder"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="OptionButton" type="OptionButton" parent="TabBar/ToolHolder/Paint"]
+layout_mode = 0
+offset_right = 45.0
+offset_bottom = 20.0
+item_count = 1
+popup/item_0/text = ""
+popup/item_0/id = 0

@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="Rogue Card"
-run/main_scene="res://Scenes/GridTestScene.tscn"
+run/main_scene="res://Assets/Textures/Scenes/GridTestScene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalGrid="*res://Scenes/Grid.tscn"
+GlobalGrid="*res://Assets/Textures/Scenes/Grid.tscn"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/grid_tools/plugin.cfg")
 
 [physics]
 

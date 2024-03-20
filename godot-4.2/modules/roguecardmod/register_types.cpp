@@ -3,6 +3,7 @@
 #include "core/object/class_db.h"
 #include "testclass.h"
 #include "Environment/grid.h"
+#include "GameObjects/BaseCard.h"
 #include "Object/grid_object.h"
 
 void initialize_roguecardmod_module(ModuleInitializationLevel p_level) {
@@ -12,6 +13,7 @@ void initialize_roguecardmod_module(ModuleInitializationLevel p_level) {
 	GDREGISTER_CLASS(TestClass);
 	GDREGISTER_CLASS(Grid);
 	GDREGISTER_CLASS(GridObject);
+	GDREGISTER_CLASS(BaseCard);
 	//ClassDB::register_class<TestClass>();
 }
 

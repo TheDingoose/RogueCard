@@ -19,10 +19,6 @@ config/icon="res://icon.svg"
 
 GlobalGrid="*res://Assets/Textures/Scenes/Grid.tscn"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/grid_tools/plugin.cfg")
-
 [physics]
 
 3d/default_gravity=0.0

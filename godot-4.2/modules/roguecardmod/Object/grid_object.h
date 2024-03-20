@@ -8,9 +8,9 @@ class GridObject : public Node3D {
 	GDCLASS(GridObject, Node3D);
 
 private:
-	bool ValidGrid = false;
+
 	Vector2i GridPos;
-	Grid* LastGridSet;
+	ObjectID LastGridSetID;
 
 	//Validate the global grid, call only at runtime
 	bool validate_grid();
@@ -19,8 +19,12 @@ private:
 	//Set this nodes transform to where it should be on the grid
 	void move_to_grid_position(Grid *grid);
 
+	Grid *find_grid_in_scene();
+
 protected:
 	static void _bind_methods();
+	void _notification(int p_what);
+
 public:
 
 	Vector2i get_grid_pos() const;

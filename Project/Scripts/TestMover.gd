@@ -18,11 +18,11 @@ func _notification(notif):
 			print("set")
 			
 			var RoundedPos = Vector2i(round(global_position.x), round(global_position.z))
-			print($"../LoaderGrid".get_cell_data(RoundedPos))
-			print($"../LoaderGrid".get_cell_ID(RoundedPos))
-			safe_move_on_grid(RoundedPos, $"../LoaderGrid")
-			print($"../LoaderGrid".get_cell_data(RoundedPos))
-			print($"../LoaderGrid".get_cell_ID(RoundedPos))
+			#print($"../LoaderGrid".get_cell_data(RoundedPos))
+			#print($"../LoaderGrid".get_cell_ID(RoundedPos))
+			#safe_move_on_grid(RoundedPos, $"../LoaderGrid")
+			#print($"../LoaderGrid".get_cell_data(RoundedPos))
+			#print($"../LoaderGrid".get_cell_ID(RoundedPos))
 	
 	
 	# safe_move_on_grid(RoundedPos)

@@ -1,4 +1,4 @@
 Import('env')
 
-src_list = ["register_types.cpp", "testclass.cpp", "Object\grid_object.cpp", "Environment\grid.cpp", "GameObjects\BaseCard.cpp" ]
+src_list = ["register_types.cpp", "testclass.cpp", "Object\grid_object.cpp", "Environment\grid.cpp", "Object\grid_pawn.cpp", "GameObjects\BaseCard.cpp" ]
 env.add_source_files(env.modules_sources, src_list)

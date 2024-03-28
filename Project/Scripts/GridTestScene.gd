@@ -1,6 +1,7 @@
 extends Node3D
 
-
+var marker = load("res://Marker.tscn")
+var radius = 2
 var grid
 var RAY_LENGTH = 100
 var selected = null
@@ -25,8 +26,28 @@ func _input(event):
 			var result = space_state.intersect_ray(query)
 			print("try!")
 			if !result.is_empty():
-				print(result["collider"].get_parent().name + " selected!")
+				#print(result["collider"].get_parent().name + " selected!")
 				selected = result["collider"].get_parent()
+			else:
+				var dir = camera3d.project_ray_normal(event.position)
+				var dist = absf(from.y) / absf(dir.y)
+				var planepoint = round(from + dir * dist)
+				var planepoint2d = Vector2i(planepoint.x, planepoint.z)
+				var coords = grid.get_hollow_circle_coords(planepoint2d, radius, radius + 7)
+				#var coords = grid.get_circle_coords(planepoint2d, radius)
+				radius = radius + 1
+				var co = 0.0
+				for c in coords: 
+					print(c)
+					var spawned = marker.instantiate()
+					spawned.update_colour(float(co) / float(coords.size()))
+					add_child(spawned)
+					spawned.set_global_position(Vector3(c.x, 0, c.y))
+					co = co + 1
+				#	await get_tree().create_timer(0.2).timeout
+					print(float(co) / float(coords.size()))
+				print("------")
+				
 		else:
 			#find ray direction
 			var dir = camera3d.project_ray_normal(event.position)

@@ -26,10 +26,15 @@ public:
 
 	GridObject* get_cell_data(const Vector2i &location);
 	ObjectID get_cell_id(const Vector2i &location);
-	Vector<ObjectID> get_line_id(const Vector2i &start, const Vector2i &end, bool include_empty);
+	//Vector<ObjectID> get_line_id(, bool include_empty);
+	Array get_line_coords(const Vector2i &start, const Vector2i &end);
 	Array get_circle_coords(const Vector2i &location, int radius);
 	Array get_hollow_circle_coords(const Vector2i &location, int inner_radius, int outer_radius);
-	Vector<ObjectID> get_radius_id(const Vector2i &location, int radius, bool include_empty);
+	Array get_halo_coords(const Vector2i &location, int radius);
+	Array get_square_coords(const Vector2i &location, const Vector2i &size);
+	Array get_array_id(const Array &locations, bool include_empty);
+	Array get_array_data(const Array &locations, bool include_empty);
+	//Vector<ObjectID> get_radius_id(const Vector2i &location, int radius, bool include_empty);
 	//get_cube_data()
 
 	void empty_cell_data(const Vector2i &location);

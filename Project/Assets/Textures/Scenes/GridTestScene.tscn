@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://l74xi1hd0h7o"]
+[gd_scene load_steps=14 format=3 uid="uid://l74xi1hd0h7o"]
 
 [ext_resource type="Script" path="res://Scripts/GridTestScene.gd" id="1_4lf5x"]
 [ext_resource type="Script" path="res://Scripts/TestMover.gd" id="2_t3mn6"]
@@ -36,8 +36,6 @@ emission_enabled = true
 emission = Color(1, 0, 1, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_a4wfd"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_pww15"]
 
 [node name="GridTestScene" type="Node3D"]
 script = ExtResource("1_4lf5x")
@@ -140,6 +138,3 @@ mesh = SubResource("QuadMesh_a4wfd")
 skeleton = NodePath("../..")
 
 [node name="GameplayUi" parent="." instance=ExtResource("5_ye0ec")]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_pww15")

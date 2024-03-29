@@ -2,6 +2,33 @@
 
 #include "../Object/grid_object.h"
 
+bool clockwise_compare(Vector2i center, Vector2i a, Vector2i b) {
+	if (a.x - center.x >= 0 && b.x - center.x < 0)
+		return true;
+	if (a.x - center.x < 0 && b.x - center.x >= 0)
+		return false;
+	if (a.x - center.x == 0 && b.x - center.x == 0) {
+		if (a.y - center.y >= 0 || b.y - center.y >= 0)
+			return a.y > b.y;
+		return b.y > a.y;
+	}
+
+	// compute the cross product of vectors (center -> a) x (center -> b)
+	int det = (a.x - center.x) * (b.y - center.y) - (b.x - center.x) * (a.y - center.y);
+	if (det < 0)
+		return true;
+	if (det > 0)
+		return false;
+
+	// points a and b are on the same line from the center
+	// check which point is closer to the center
+	int d1 = (a.x - center.x) * (a.x - center.x) + (a.y - center.y) * (a.y - center.y);
+	int d2 = (b.x - center.x) * (b.x - center.x) + (b.y - center.y) * (b.y - center.y);
+	return d1 > d2;
+}
+
+
+
 Grid::Grid() {
 	
 	SquareSize = Vector2(1,1);
@@ -37,8 +64,8 @@ ObjectID Grid::get_cell_id(const Vector2i &location) {
 	return ObjectID(); //nulll
 }
 
-Vector<ObjectID> Grid::get_line_id(const Vector2i &start, const Vector2i &end, bool include_empty = false) {
-	
+Array Grid::get_line_coords(const Vector2i &start, const Vector2i &end) {
+
 	Vector2i Diff = end - start;
 	Vector2i Step;
 	int Length;
@@ -51,26 +78,22 @@ Vector<ObjectID> Grid::get_line_id(const Vector2i &start, const Vector2i &end, b
 		Length = abs(Diff.x);
 		Step = Diff / abs(Length);
 	} else { //Neither
-		return Vector<ObjectID>();
+		return Array();
 	}
 
-	Vector<ObjectID> Ret;
+	Array Ret;
 
 	//i is the cell to check, moves step by step to the end point
-	for (Vector2i i = start; start != end + Step ; i += Step) {
-		ObjectID o = get_cell_id(i);
-		if (!o.is_null() || include_empty) {
-			Ret.push_back(o);
-		}
+	for (Vector2i i = start; start != end + Step; i += Step) {
+		Ret.push_back(i);
 	}
 
 	return Ret;
-} //STILL GOTTA PUT THIS INTO THE BIND, REMEMBER TO ADD THE SET FOR INCLUDE EMPTY = false
+}
 
 Array Grid::get_circle_coords(const Vector2i &location, int radius) {
 	float adj_radius = radius + 0.5;
 	Dictionary Unsorted;
-	Unsorted.clear();
 	for (int x = location.x - radius; x <= location.x + radius; x++) {
 		for (int y = location.y - radius; y <= location.y + radius; y++) { // De for loop neemt alles in een vierkant rond de cirkel, dat helpt met het verminderen van operations.
 			float xDiff = x - location.x;
@@ -96,25 +119,8 @@ Array Grid::get_circle_coords(const Vector2i &location, int radius) {
 	}
 
 	//Sort keys, then set the array
-
 	Array Keys = Unsorted.keys();
-
-	float key;
-	int i, j;
-	for (i = 1; i < Keys.size(); i++) {
-		key = float(Keys[i]);
-		j = i - 1;
-	
-		// Move elements of arr[0..i-1],
-		// that are greater than key,
-		// to one position ahead of their
-		// current position
-		while (j >= 0 && float(Keys[j]) > key) {
-			Keys[j + 1] = Keys[j];
-			j = j - 1;
-		}
-		Keys[j + 1] = key;
-	}
+	Keys.sort();
 
 	Array Ret;
 	Ret.resize(Unsorted.size());
@@ -145,65 +151,127 @@ Array Grid::get_hollow_circle_coords(const Vector2i &location, int inner_radius,
 	return Ret;
 }
 
-                   
+Array Grid::get_halo_coords(const Vector2i &location, int radius) {
+	float adj_radius = radius + 0.5f;
+	Array Ret;
 
-Vector<ObjectID> Grid::get_radius_id(const Vector2i &location, int radius, bool include_empty) {
+	if (radius == 0) {
+		Ret.push_back(Vector2i(location.x, location.y));
+		return Ret;
+	}
 
-	Vector<ObjectID> Ret;
+	Ret.push_back(Vector2i(location.x, location.y + radius));
+	Ret.push_back(Vector2i(location.x + radius, location.y));
+	Ret.push_back(Vector2i(location.x, location.y - radius));
+	Ret.push_back(Vector2i(location.x - radius, location.y));
 
+	for (int r = 1; r <= floor(adj_radius * sqrt(0.5)); r++) {
+		int d = floor(sqrt(adj_radius * adj_radius - r * r));
+		if (r == d) {
+			Ret.push_back(Vector2i(location.x - d, location.y + r));
+			Ret.push_back(Vector2i(location.x + d, location.y + r));
+			Ret.push_back(Vector2i(location.x - d, location.y - r));
+			Ret.push_back(Vector2i(location.x + d, location.y - r));
+		} else {	
+		Ret.push_back(Vector2i(location.x - d, location.y + r));
+		Ret.push_back(Vector2i(location.x + d, location.y + r));
+		Ret.push_back(Vector2i(location.x - d, location.y - r));
+		Ret.push_back(Vector2i(location.x + d, location.y - r));
+		Ret.push_back(Vector2i(location.x + r, location.y - d));
+		Ret.push_back(Vector2i(location.x + r, location.y + d));
+		Ret.push_back(Vector2i(location.x - r, location.y - d));
+		Ret.push_back(Vector2i(location.x - r, location.y + d));
+		}
+	}
+
+	//Sort clockwise
+	Vector2i key;
+	int i, j;
+	for (i = 1; i < Ret.size(); i++) {
+		key = Vector2i(Ret[i]);
+		j = i - 1;
 	
-	if (true) { //Add location itself
-		ObjectID o = get_cell_id(location);
-		if (!o.is_null() || include_empty) {
-			Ret.push_back(o);
+		// Move elements of arr[0..i-1],
+		// that are greater than key,
+		// to one position ahead of their
+		// current position
+		while (j >= 0 && clockwise_compare(location, key, Ret[j]))
+		{
+			Ret[j + 1] = Ret[j];
+			j = j - 1;
 		}
+		Ret[j + 1] = key;
 	}
-
-	//first 8 cells: NW, N, NE, E, SE, S, SW, W
-	if (radius >= 1) {
-		ObjectID o;
-		o = get_cell_id(location + Vector2i(-1, 1)); //NW
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(0, 1)); //N
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(1, 1)); //NE
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(1, 0)); //E
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(1, -1)); //SE
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(0, -1)); //S
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(-1, -1)); //SW
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(-1, 0)); //W
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-	}
-
-	//other radii: 3, diags, 3, diags, 3...
-	for (int i = 2; i <	radius; i++) {
-		ObjectID o;
-		//add the 3 top ones
-		o = get_cell_id(location + Vector2i(-1, i)); //NW
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(-1, i)); //N
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		o = get_cell_id(location + Vector2i(-1, i)); //NE
-		if (!o.is_null() || include_empty) {Ret.push_back(o);}
-
-		//the diagonal
-		for (int j = 1 ; j < i - 1; j++) {
-			Vector2i Step(1, -1);
-			//o = get_cell_id(location + Vector2i(-1, i)); //NW
-			if (!o.is_null() || include_empty) {Ret.push_back(o);}
-		}
-
-
-	}
-	//it would be better if we then step up to 5's and get the double diags, but not sure if theres a simple algorithm for it
 
 	return Ret;
 }
+
+Array Grid::get_square_coords(const Vector2i &location, const Vector2i &size) {
+	Dictionary Unsorted;
+	Vector2i Center(location + size / 2);
+	for (int x = location.x; x <= location.x + size.x; x++) {
+		for (int y = location.y; y <= location.y + size.y; y++) { // De for loop neemt alles in een vierkant rond de cirkel, dat helpt met het verminderen van operations.
+			float xDiff = x - Center.x;
+			float yDiff = y - Center.y;
+			// om sqrt te vermijden kijken we naar ^2 values.
+			float dist = xDiff * xDiff + yDiff * yDiff;
+			{
+				if (xDiff == 0) // Fix edgecase with xDiff = 0
+				{
+					if (yDiff > 0) {
+						Unsorted[dist + 0.0001f * 90] = Vector2i(x, y);
+					} else {
+						Unsorted[dist + 0.0001f * 270] = Vector2i(x, y);
+					}
+				} else if (xDiff > 0) {
+					Unsorted[dist + 0.0001f * (360 + Math::rad_to_deg(atanf(yDiff / xDiff)))] = Vector2i(x, y);
+				} else if (xDiff < 0) {
+					Unsorted[dist + 0.0001f * (180 + Math::rad_to_deg(atanf(yDiff / xDiff)))] = Vector2i(x, y);
+				}
+			}
+		}
+	}
+
+	//Sort keys, then set the array
+
+	Array Keys = Unsorted.keys();
+	Keys.sort();
+
+	Array Ret;
+	Ret.resize(Unsorted.size());
+	for (int i = 0; i < Keys.size(); i++) {
+		Ret[i] = Unsorted[Keys[i]];
+	}
+	return Ret;
+}
+
+//TODO: ADD FUNCTION BINDINGS AND SETUP THIS AND GET_ARRAY_DATA
+
+Array Grid::get_array_id(const Array &locations, bool include_empty = false) {
+
+	Array Ret;
+
+	for (int i = 0; i < locations.size(); i++) {
+		ObjectID id = get_cell_id(locations[i]); //DOES THIS WORK??
+		if (include_empty || !id.is_null()) {
+			Ret.push_back(id);
+		}
+	}
+	return Ret;
+}
+
+Array Grid::get_array_data(const Array &locations, bool include_empty = false) {
+
+	Array Ret;
+
+	for (int i = 0; i < locations.size(); i++) {
+		GridObject* obj = get_cell_data(locations[i]); //DOES THIS WORK??
+		if (include_empty || obj != nullptr) {
+			Ret.push_back(obj);
+		}
+	}
+	return Ret;
+}      
 
 void Grid::empty_cell_data(const Vector2i &location) {
 	GridData.erase(location);
@@ -270,9 +338,12 @@ void Grid::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_square_size", "size"), &Grid::set_square_size);
 	ClassDB::bind_method(D_METHOD("get_square_size_3d"), &Grid::get_square_size_3d);
 
-
 	ClassDB::bind_method(D_METHOD("get_circle_coords", "location", "radius"), &Grid::get_circle_coords);
 	ClassDB::bind_method(D_METHOD("get_hollow_circle_coords", "location", "inner_radius", "outer_radius"), &Grid::get_hollow_circle_coords);
+	ClassDB::bind_method(D_METHOD("get_halo_coords", "location", "radius"), &Grid::get_halo_coords);
+	ClassDB::bind_method(D_METHOD("get_square_coords", "location", "size"), &Grid::get_square_coords);
+	ClassDB::bind_method(D_METHOD("get_array_id", "array", "include_empty"), &Grid::get_array_id, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_array_data", "array", "include_empty"), &Grid::get_array_data, DEFVAL(false));
 
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "square_size"), "set_square_size", "get_square_size");
 }

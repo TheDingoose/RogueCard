@@ -12,20 +12,6 @@ func _ready():
 pass # Replace with function body.
 
 func _notification(notif):
-	if (notif == NOTIFICATION_TRANSFORM_CHANGED && Engine.is_editor_hint()):
-		var twodPos = Vector2(global_position.x, global_position.z)
-		if (Vector2(Vector2(get_grid_pos()) - twodPos).length() >= 1):
-			print("set")
-			
-			var RoundedPos = Vector2i(round(global_position.x), round(global_position.z))
-			#print($"../LoaderGrid".get_cell_data(RoundedPos))
-			#print($"../LoaderGrid".get_cell_ID(RoundedPos))
-			#safe_move_on_grid(RoundedPos, $"../LoaderGrid")
-			#print($"../LoaderGrid".get_cell_data(RoundedPos))
-			#print($"../LoaderGrid".get_cell_ID(RoundedPos))
-	
-	
-	# safe_move_on_grid(RoundedPos)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

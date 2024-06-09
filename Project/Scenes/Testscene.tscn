@@ -1,12 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://crtv5oc0bc64w"]
+[gd_scene load_steps=9 format=3 uid="uid://crtv5oc0bc64w"]
 
 [ext_resource type="Texture2D" uid="uid://bp1fxwgwy5y8p" path="res://Assets/Textures/fe.png" id="1_xi4hp"]
 [ext_resource type="Script" path="res://Scripts/TestScriptTester.gd" id="2_ggkrn"]
+[ext_resource type="Script" path="res://Scenes/Stupid.gd" id="3_x4avi"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_762g3"]
 albedo_texture = ExtResource("1_xi4hp")
 
 [sub_resource type="QuadMesh" id="QuadMesh_o72es"]
+
+[sub_resource type="SimpleCard" id="SimpleCard_2qfkf"]
+
+[sub_resource type="CardEffect" id="CardEffect_joqaa"]
+effect_strength = 3
+effect = 0
+
+[sub_resource type="CardEffect" id="CardEffect_5v85l"]
+effect_strength = 5
+effect = 1
 
 [node name="Node3D" type="Node3D"]
 
@@ -15,3 +26,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38939, 0)
 material_override = SubResource("StandardMaterial3D_762g3")
 mesh = SubResource("QuadMesh_o72es")
 script = ExtResource("2_ggkrn")
+
+[node name="Node3D" type="Node3D" parent="."]
+script = ExtResource("3_x4avi")
+stoobid = SubResource("SimpleCard_2qfkf")
+stoobidArray = [SubResource("CardEffect_joqaa"), SubResource("CardEffect_5v85l")]
+stoobidCost = 1

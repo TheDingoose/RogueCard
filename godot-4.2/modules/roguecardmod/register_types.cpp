@@ -6,6 +6,8 @@
 #include "GameObjects/Cards/BaseCard.h"
 #include "GameObjects/Cards/SimpleCard.h"
 #include "GameObjects/Cards/CardEffect.h"
+#include "Object/grid_object.h"
+#include "Object/grid_pawn.h"
 
 void initialize_roguecardmod_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
@@ -16,6 +18,8 @@ void initialize_roguecardmod_module(ModuleInitializationLevel p_level) {
 	GDREGISTER_CLASS(BaseCard);
 	GDREGISTER_CLASS(SimpleCard);
 	GDREGISTER_CLASS(CardEffect)
+	GDREGISTER_CLASS(GridObject);
+	GDREGISTER_CLASS(GridPawn);
 	//ClassDB::register_class<TestClass>();
 }
 

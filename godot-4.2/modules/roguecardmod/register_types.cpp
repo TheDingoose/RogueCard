@@ -3,9 +3,9 @@
 #include "core/object/class_db.h"
 #include "testclass.h"
 #include "Environment/grid.h"
-#include "GameObjects/BaseCard.h"
-#include "Object/grid_object.h"
-#include "Object/grid_pawn.h"
+#include "GameObjects/Cards/BaseCard.h"
+#include "GameObjects/Cards/SimpleCard.h"
+#include "GameObjects/Cards/CardEffect.h"
 
 void initialize_roguecardmod_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
@@ -13,9 +13,9 @@ void initialize_roguecardmod_module(ModuleInitializationLevel p_level) {
 	}
 	GDREGISTER_CLASS(TestClass);
 	GDREGISTER_CLASS(Grid);
-	GDREGISTER_CLASS(GridObject);
-	GDREGISTER_CLASS(GridPawn);
 	GDREGISTER_CLASS(BaseCard);
+	GDREGISTER_CLASS(SimpleCard);
+	GDREGISTER_CLASS(CardEffect)
 	//ClassDB::register_class<TestClass>();
 }
 

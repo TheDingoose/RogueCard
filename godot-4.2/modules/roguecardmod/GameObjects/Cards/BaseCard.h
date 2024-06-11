@@ -6,6 +6,7 @@
 #include "core/object/object.h"
 #include "scene/2d/node_2d.h"
 
+class Grid;
 
 class BaseCard : public Resource
 {
@@ -25,7 +26,7 @@ public:
 
 	BaseCard();
 
-	bool Use();
+	bool Use(Vector2i location, Grid *grid);
 
 	void Set_Card_Cost(int a_cost) { m_Cost = a_cost; }
 	int Get_Card_Cost() { return m_Cost; }

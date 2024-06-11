@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://doyy46apmhstb"]
+
+[ext_resource type="Texture2D" uid="uid://dnw47ndkncd74" path="res://Assets/Cards/Back/TEMPcardbackEmpty1Square.png" id="1_5exvl"]
+[ext_resource type="Texture2D" uid="uid://b41teeyrsryjo" path="res://Assets/Cards/Skills/Defend.png" id="2_giehr"]
+[ext_resource type="Script" path="res://Scenes/UI/Card/CardCoreVisual.gd" id="2_snab4"]
+[ext_resource type="Texture2D" uid="uid://bqcxe0mpgl0n6" path="res://Assets/Cards/Back/TEMPback.png" id="3_kurlh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8wxr5"]
+size = Vector2(256, 400)
+
+[node name="Card" type="Sprite2D"]
+texture = ExtResource("1_5exvl")
+script = ExtResource("2_snab4")
+
+[node name="SkillImage" type="Sprite2D" parent="."]
+position = Vector2(0, -71)
+texture = ExtResource("2_giehr")
+
+[node name="Back" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("3_kurlh")
+
+[node name="MouseDetecting" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
+
+[node name="DetectingShape" type="CollisionShape2D" parent="MouseDetecting"]
+shape = SubResource("RectangleShape2D_8wxr5")

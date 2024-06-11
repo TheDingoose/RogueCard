@@ -1,8 +1,8 @@
 extends Node3D
 @export var stoobid = SimpleCard.new()
-@export var stoobidArray:Array = stoobid.Effect
-@export var stoobidCost = stoobid.Get_card_cost()
-@export var stoobidDescription = stoobid.Get_Card_Description()
+@export var stoobidArray:Array = stoobid.get_effect_array()
+@export var stoobidCost = stoobid.get_card_cost()
+@export var stoobidDescription = stoobid.get_card_description()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,7 +14,7 @@ func _process(delta):
 	pass
 
 func _init():
-	stoobid.Set_Effect_Array(stoobidArray)
-	stoobid.Set_card_cost(stoobidCost)
-	stoobid.Set_Card_Description(stoobidDescription)
+	stoobid.set_effect_array(stoobidArray)
+	stoobid.set_card_cost(stoobidCost)
+	stoobid.set_card_description(stoobidDescription)
 	pass

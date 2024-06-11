@@ -13,32 +13,20 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == 1:
-		var camera3d = $Camera3D
-		var from = camera3d.project_ray_origin(event.position)
-		var to = from + camera3d.project_ray_normal(event.position) * RAY_LENGTH
+		var gridspace = $Hand.get_mouse_grid_position()
 		if selected == null: #if we dont have a thing selected
-			var space_state = get_world_3d().direct_space_state
-			var query = PhysicsRayQueryParameters3D.create(from, to)
-			query.collide_with_areas = true;
-			query.collide_with_bodies = true;
-			var result = space_state.intersect_ray(query)
-			if !result.is_empty():
-				#print(result["collider"].get_parent().name + " selected!")
-				selected = result["collider"].get_parent()
-				
+			var result = grid.get_cell_id(gridspace)
+			if is_instance_id_valid(result):
+				selected = instance_from_id(result)
+				#print(selected.name + " selected!")
 		else:
 			#find ray direction
-			var dir = camera3d.project_ray_normal(event.position)
-			var dist = absf(from.y) / absf(dir.y)
-			var planepoint = round(from + dir * dist)
-			var planepoint2d = Vector2i(planepoint.x, planepoint.z)
-			print(planepoint2d)
-			selected.safe_move_on_grid(planepoint2d, grid)
+			selected.safe_move_on_grid(gridspace, grid)
 			selected = null
+	elif event is InputEventKey:
+		if event.keycode == KEY_D and event.pressed:
+			$Hand.draw_card()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	get_viewport().get_mouse_position()
-	#if clicked on a GridObject, set var to that
-	#if clicked on empty cell with Gridobject Selected, move to there
 	pass

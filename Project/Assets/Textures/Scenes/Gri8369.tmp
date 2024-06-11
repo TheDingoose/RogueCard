@@ -77,8 +77,9 @@ size = 15.0
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D"]
 visible = false
 
-[node name="Selector" type="Node3D" parent="Camera3D"]
+[node name="Selector" type="Node3D" parent="Camera3D" node_paths=PackedStringArray("camera")]
 script = ExtResource("2_yhrxr")
+camera = NodePath("..")
 
 [node name="TestMover" type="GridObject" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 1, 0, 0)

@@ -1,14 +1,3 @@
-[gd_resource type="SimpleCard" load_steps=3 format=3 uid="uid://52sk83iu866i"]
-
-[sub_resource type="CardEffect" id="CardEffect_d78ep"]
-effect_strength = 3
-effect = 0
-
-[sub_resource type="CardEffect" id="CardEffect_uxgp3"]
-effect_strength = 5
-effect = 1
+[gd_resource type="SimpleCard" format=3 uid="uid://52sk83iu866i"]
 
 [resource]
-Cost = 1
-Description = "Attack the target for 3 damage, then Shield the closest ally for 5."
-Effect = [SubResource("CardEffect_d78ep"), SubResource("CardEffect_uxgp3")]

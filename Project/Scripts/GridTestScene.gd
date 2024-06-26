@@ -26,6 +26,9 @@ func _input(event):
 	elif event is InputEventKey:
 		if event.keycode == KEY_D and event.pressed:
 			$Hand.draw_card()
+		elif event.keycode == KEY_F and event.pressed:
+			if $Hand.is_dragging_card:
+				$Hand.dragging_card.flipped = !$Hand.dragging_card.flipped
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
